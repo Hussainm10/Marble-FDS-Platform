@@ -4,6 +4,16 @@ This document consolidates **every external source** the Marble FDS platform and
 
 > **Verification date:** 2026-04-28. Where a numeric threshold appears in a rule, follow the table below to the source URL + clause; if the source has been revised since this date, update the rule constant before deploying.
 
+> **⚠️ Secondary-source disclaimer (added 2026-08-19):** The thresholds below were compiled via AI-assisted research against secondary sources (news coverage, summaries, cached pages) rather than a line-by-line read of the current primary regulation text for every entry — several of SBP's own PDFs blocked automated fetching during compilation. An independent re-check found:
+> - §3.2 CTR threshold: sources conflict between **PKR 2,000,000** (as stated) and **PKR 2,500,000** cited elsewhere — unresolved, verify against the current SBP AML/CFT Regulations text before relying on it.
+> - §3.2 CDD occasional-cash-customer threshold (PKR 500,000): could not be independently confirmed in an authoritative SBP document.
+> - §3.2 STR filing window: FMU guidance specifies "immediately, but not later than 7 working days" after suspicion forms — more specific than "without delay" as stated.
+> - §3.2 FCY biometric threshold (USD 500): real but since superseded by newer SBP rules (PKR-account mandate ≥$2,000, daily/annual caps, facial-recognition dual-biometric mandate effective 1 Jan 2026 per public reporting) — the figure below is outdated.
+> - §3.2 record retention (10 years): confirmed for STR-related records specifically; whether it extends to all customer/transaction records under the Act needs primary-text confirmation.
+> - §3.2 dormancy (12mo / 15yr): confirmed, but the 15-year unclaimed-deposit rule traces to the Banking Companies Ordinance 1962 §31, not the 2024 Amendment Act as implied below.
+>
+> FATF grey-list exit date (21 Oct 2022) and Branchless Banking Level 0 limits were independently confirmed and are solid. **Treat every other numeric threshold in this document as a starting point requiring primary-source verification, not a settled fact — this is a known limitation of the pack, not a hidden one.**
+
 ---
 
 ## 1. Platform foundations

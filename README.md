@@ -93,6 +93,8 @@ cp scripts/rules_library/pakistan.py scripts/rules_library/<your_pack>.py
 
 Full clause-by-clause source mapping: [`docs/jurisdictions/pakistan/REGULATORY_MAPPING.md`](docs/jurisdictions/pakistan/REGULATORY_MAPPING.md).
 
+> **Note on the numbers:** the rule thresholds were compiled via AI-assisted research against secondary sources, not a clause-by-clause read of every current primary regulation. An independent re-check confirmed the core structure and several key figures (FATF grey-list exit date, Branchless Banking Level 0 limits) but flagged a few thresholds as unconfirmed or outdated — see the disclaimer at the top of [`REFERENCES.md`](REFERENCES.md) before treating any specific figure as settled.
+
 Any bank can bring their own Postgres schema, author their own rule pack the same way, and run the identical three-tier pipeline underneath.
 
 ---
