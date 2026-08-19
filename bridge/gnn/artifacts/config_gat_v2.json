@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "trained_at": "2026-02-06T19:04:03.098713+00:00",
+  "dataset": "elliptic",
+  "model_type": "ImprovedGAT",
+  "architecture": {
+    "in_channels": 172,
+    "hidden_channels": 128,
+    "out_channels": 2,
+    "num_layers": 3,
+    "heads": 4,
+    "dropout": 0.3
+  },
+  "training": {
+    "epochs": 200,
+    "learning_rate": 0.005,
+    "weight_decay": 0.0005,
+    "focal_loss_gamma": 2.0,
+    "device": "cpu"
+  },
+  "metrics": {
+    "auc_roc": 0.7851074770636294,
+    "auc_pr": 0.18597486133585428,
+    "best_f1": 0.25957446808510637,
+    "best_threshold": 0.9,
+    "precision_at_best": 0.3609467455621302,
+    "recall_at_best": 0.2026578073089701,
+    "test_samples": 13972,
+    "test_fraud_count": 301
+  },
+  "best_threshold": 0.9
+}

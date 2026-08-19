@@ -1,0 +1,13 @@
+contract_code,contract_name,tt_code
+MRB,Murabaha,70
+MDR,Mudarabah,71
+MSH,Musharakah,72
+IJR,Ijarah,73
+IJR-MBT,Ijarah Muntahia Bittamleek,74
+DM,Diminishing Musharakah,75
+WKL,Wakalah,76
+QRD,Qard Hasan,77
+SLM,Salam,78
+IST,Istisna,79
+SUK,Sukuk,80
+TKL,Takaful,81

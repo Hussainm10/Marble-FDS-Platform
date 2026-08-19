@@ -1,0 +1,66 @@
+district_code,province_code,name
+PB-01,PB,Lahore
+PB-02,PB,Faisalabad
+PB-03,PB,Rawalpindi
+PB-04,PB,Multan
+PB-05,PB,Gujranwala
+PB-06,PB,Bahawalpur
+PB-07,PB,Sargodha
+PB-08,PB,Sialkot
+PB-09,PB,Sheikhupura
+PB-10,PB,Jhang
+PB-11,PB,Khanewal
+PB-12,PB,Dera Ghazi Khan
+PB-13,PB,Rajanpur
+PB-14,PB,Rahim Yar Khan
+SD-01,SD,Karachi East
+SD-02,SD,Karachi West
+SD-03,SD,Karachi Central
+SD-04,SD,Karachi South
+SD-05,SD,Karachi Malir
+SD-06,SD,Karachi Korangi
+SD-07,SD,Hyderabad
+SD-08,SD,Sukkur
+SD-09,SD,Larkana
+SD-10,SD,Mirpur Khas
+SD-11,SD,Shaheed Benazirabad
+SD-12,SD,Khairpur
+SD-13,SD,Thatta
+KP-01,KP,Peshawar
+KP-02,KP,Mardan
+KP-03,KP,Abbottabad
+KP-04,KP,Mansehra
+KP-05,KP,Swat
+KP-06,KP,Charsadda
+KP-07,KP,Nowshera
+KP-08,KP,Kohat
+KP-09,KP,Dera Ismail Khan
+KP-10,KP,Bannu
+KP-11,KP,North Waziristan
+KP-12,KP,South Waziristan
+KP-13,KP,Khyber
+KP-14,KP,Kurram
+KP-15,KP,Bajaur
+KP-16,KP,Mohmand
+KP-17,KP,Orakzai
+BL-01,BL,Quetta
+BL-02,BL,Gwadar
+BL-03,BL,Kech (Turbat)
+BL-04,BL,Sibi
+BL-05,BL,Khuzdar
+BL-06,BL,Loralai
+BL-07,BL,Chaman (Killa Abdullah)
+BL-08,BL,Panjgur
+BL-09,BL,Kharan
+BL-10,BL,Awaran
+BL-11,BL,Dera Bugti
+BL-12,BL,Mastung
+ICT-01,ICT,Islamabad
+AJK-01,AJK,Muzaffarabad
+AJK-02,AJK,Mirpur
+AJK-03,AJK,Bhimber
+AJK-04,AJK,Kotli
+GB-01,GB,Gilgit
+GB-02,GB,Skardu
+GB-03,GB,Hunza
+GB-04,GB,Ghizer

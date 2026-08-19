@@ -1,0 +1,98 @@
+Marble FDS — Fraud Detection Platform
+Copyright 2026 Marble FDS Contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+================================================================================
+THIRD-PARTY COMPONENTS
+================================================================================
+
+This product depends on, and is built to run on top of, the following third-
+party components. The Marble FDS additions in this repository (the bridge
+service in `bridge/`, the provisioning scripts in `scripts/`, the jurisdiction
+rule packs in `scripts/rules_library/`, the seed data in `seed_data/`, the
+documentation in `docs/`, and all root-level `.md` files) are licensed under
+Apache 2.0 above. The third-party components below remain under their own
+respective licenses; nothing in this repository modifies or supersedes them.
+
+--------------------------------------------------------------------------------
+
+Checkmarble (marble-backend, marble-frontend)
+  Source:  https://github.com/checkmarble/marble-backend
+           https://github.com/checkmarble/marble-frontend
+  License: Elastic License 2.0
+           https://www.elastic.co/licensing/elastic-license
+  Used as: The decision engine. Pinned to v0.59.0 (backend) / v0.59.1
+           (frontend) in `docker-compose.yml`. Pulled as Docker images at
+           `europe-west1-docker.pkg.dev/marble-infra/marble/...`. Not
+           redistributed in source form by this repository.
+
+  The Elastic License 2.0 permits commercial use, modification, and
+  redistribution under three conditions: (i) you may not provide the
+  software to others as a managed service, (ii) you may not circumvent
+  license-key functionality, (iii) you may not remove/obscure the
+  licensor's copyright or license notices. Marble FDS satisfies these
+  conditions: it is a self-deployed platform built on top of an unmodified
+  Checkmarble image; this NOTICE preserves the licensor's attribution.
+
+--------------------------------------------------------------------------------
+
+PaySim (mobile-money simulator dataset)
+  Source:  https://www.kaggle.com/datasets/ealaxi/paysim1
+  Citation: Lopez-Rojas, Edgar; Elmir, Ahmad; Axelsson, Stefan. "PaySim:
+            A financial mobile money simulator for fraud detection."
+            28th European Modeling and Simulation Symposium-EMSS, 2016.
+  License: CC BY-SA 4.0 (Kaggle dataset terms)
+  Used as: Training data for the Marbel XGBoost v2 (Layer 2) and
+           HybridGNN v4 (Layer 3) models. Not redistributed in this
+           repository (gitignored under `bridge/training/data/`).
+
+--------------------------------------------------------------------------------
+
+Firebase (Authentication + Emulator Suite)
+  Source:  https://firebase.google.com/
+  License: Firebase Terms of Service
+           https://firebase.google.com/terms
+  Used as: JWT issuer for Marble UI + API. Real Firebase project
+           `marble-fds-demo` (Spark/free tier) and Firebase Auth Emulator
+           (Apache 2.0, Google) for development.
+
+--------------------------------------------------------------------------------
+
+Other open-source runtime dependencies
+  PostgreSQL  (PostgreSQL License)        — https://www.postgresql.org/
+  FastAPI     (MIT)                       — https://github.com/tiangolo/fastapi
+  pydantic    (MIT)                       — https://github.com/pydantic/pydantic
+  structlog   (Apache-2.0/MIT dual)       — https://github.com/hynek/structlog
+  asgi-correlation-id (MIT)               — https://github.com/snok/asgi-correlation-id
+  prometheus-client (Apache-2.0)          — https://github.com/prometheus/client_python
+  XGBoost     (Apache-2.0)                — https://github.com/dmlc/xgboost
+  PyTorch     (BSD-3-Clause)              — https://pytorch.org/
+  PyTorch Geometric (MIT)                 — https://pytorch-geometric.readthedocs.io/
+  httpx       (BSD-3-Clause)              — https://www.python-httpx.org/
+  requests    (Apache-2.0)                — https://requests.readthedocs.io/
+
+================================================================================
+REGULATORY MATERIAL — REFERENCED, NOT REDISTRIBUTED
+================================================================================
+
+The Pakistan reference jurisdiction pack cites numerous statutory and
+regulatory documents — SBP / FMU / FATF / NADRA / PTA / AML Act 2010 /
+Banking Companies Ordinance — under fair-use reference, with citation but
+without redistribution. Refer to `REFERENCES.md` for the full source map
+and public URLs. Any bank-specific handoff PDFs supplied to a deploying
+institution remain the property of their respective authors and are not
+redistributed by this repository; banks deploying this platform are
+responsible for verifying the regulatory citations in their own
+jurisdiction.
+
+================================================================================
+DISCLAIMER
+================================================================================
+
+This software is provided "AS IS", without warranty of any kind. All
+fraud-detection decisions are SUGGESTIVE — final authority rests with a
+licensed Compliance Officer per the deploying institution's Maker-Checker
+governance. The reference rules and thresholds are believed correct as of
+the verification date in `REFERENCES.md`, but regulatory environments
+change; deploying institutions are responsible for keeping rules current.

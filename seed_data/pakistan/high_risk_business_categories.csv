@@ -1,0 +1,16 @@
+category,risk_level,aml_flag
+Hundi and Hawala,critical,true
+Unlicensed Money Changers,critical,true
+Virtual Assets and Crypto,critical,true
+Casinos and Gambling,critical,true
+Weapons and Ammunition,critical,true
+Gold Bullion and Smuggling Routes,critical,true
+Jewellery and Precious Metals,high,true
+Real Estate Cash-Heavy,high,true
+Antiquities and Cultural Artifacts,high,true
+Cash-Intensive Businesses,high,true
+Pawn Shops,elevated,true
+Used Car Dealers,elevated,true
+Travel Agencies (Hajj/Umrah),elevated,false
+Non-Profit Organizations,elevated,false
+Import-Export Trading,elevated,false

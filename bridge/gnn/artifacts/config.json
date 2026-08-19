@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "trained_at": "2026-02-06T16:44:06.928115Z",
+  "dataset": "elliptic",
+  "model_type": "GraphSAGE",
+  "architecture": {
+    "hidden_channels": 128,
+    "num_layers": 3,
+    "dropout": 0.3
+  },
+  "training": {
+    "epochs": 100,
+    "learning_rate": 0.01,
+    "weight_decay": 0.0005,
+    "device": "cpu"
+  },
+  "metrics": {
+    "auc_roc": 0.7433259869100094,
+    "auc_pr": 0.0982271857138207,
+    "best_f1": 0.14457831325301204,
+    "best_threshold": 0.8,
+    "precision_at_best": 0.32727272727272727,
+    "recall_at_best": 0.09278350515463918,
+    "false_positive_rate": 0.005447585394581861,
+    "false_negative_rate": 0.9072164948453608,
+    "test_samples": 6986,
+    "test_fraud_count": 194
+  },
+  "best_threshold": 0.8
+}

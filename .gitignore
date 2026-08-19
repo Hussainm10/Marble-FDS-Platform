@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment — NEVER commit secrets
+.env
+.env.local
+.env.*.local
+SECRETS.env
+SECRETS_LOCAL.md
+*.pem
+*.key
+
+# Firebase Admin SDK service account (contains private RSA key — TREAT AS SECRET)
+firebase-service-account.json
+*-firebase-adminsdk-*.json
+firebase-adminsdk*.json
+secrets/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Editor backups
+*~
+*.bak
+
+# Training data (large files - download separately via Kaggle)
+bridge/training/data/
+!bridge/training/data/.gitkeep
+
+# NOTE: Trained model artifacts ARE tracked in git (they're small enough)
+# bridge/marbel/artifacts/ - XGBoost models (~8MB total)
+# bridge/gnn/artifacts/ - GNN models (~5MB total)
+
+# Kaggle credentials (sensitive)
+.kaggle/
+kaggle.json
+
+# Any locally-supplied bank/operator handoff documents (private by default —
+# jurisdiction packs should not redistribute a specific institution's source PDFs)
+docs/jurisdictions/*/pdfs/
+New folder (2)/
+*.docx
+
+# Test caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Temporary files
+*.tmp
+*.log
+_tmp_*.py
+
+# OS files
+.DS_Store
+Thumbs.db
+.aider*

@@ -1,0 +1,33 @@
+# Training environment for Marbel and GNN models
+# Build: docker build -f Dockerfile.train -t fds-ml-training .
+# Run: docker run -v $(pwd)/data:/app/data -v $(pwd)/../marbel/artifacts:/app/marbel_artifacts -v $(pwd)/../gnn/artifacts:/app/gnn_artifacts fds-ml-training
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and install Python dependencies
+COPY requirements-train.txt .
+RUN pip install --no-cache-dir -r requirements-train.txt \
+    --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Copy training scripts
+COPY scripts/ ./scripts/
+
+# Create directories for data and artifacts
+RUN mkdir -p /app/data/paysim /app/data/elliptic \
+    /app/marbel_artifacts /app/gnn_artifacts
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Default command shows help
+CMD ["python", "-c", "print('Training container ready. Run scripts with: python scripts/<script>.py')"]

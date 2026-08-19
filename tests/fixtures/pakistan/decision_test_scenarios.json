@@ -1,0 +1,366 @@
+{
+  "_metadata": {
+    "purpose": "Reference test scenarios for the pakistan jurisdiction pack. Each scenario is a complete /decide request body with an expected_outcome describing the correct rule activation. These are used to validate the pack post-deployment, NOT loaded by the platform tests in tests/test_*.py.",
+    "usage": "After provisioning the pack, iterate through scenarios and POST each to http://localhost:8000/decide. Compare the response decision/escalation/compliance against expected_outcome.",
+    "scenario_id_placeholder": "All scenario_id fields contain '<TXN_RISK_SCORING_ID>'. Replace with the actual UUID of the transaction_risk_scoring scenario from the deployed org's GET /scenarios call."
+  },
+  "scenarios": [
+    {
+      "name": "safe_low_value_pkr_transfer",
+      "description": "Clean Pakistani transfer — no risk flags, should approve cleanly with low score.",
+      "expected_outcome": {
+        "marble_score_max": 25,
+        "should_escalate": false,
+        "ctr_signal": false,
+        "str_signal": false,
+        "rule_ids_should_NOT_fire": ["CMP_CTR_AMT_single_2M", "CMP_STR_LRG_withdrawal_500k_1h", "OBR_PEP_010_pep_match"]
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-safe-001",
+          "transaction_id": "test-pk-safe-001",
+          "from_wallet_uid": "wallet-pk-001",
+          "to_wallet_uid": "wallet-mch-001",
+          "amount": 5000,
+          "currency": "PKR",
+          "transaction_type": "transfer",
+          "transaction_status": "Success",
+          "channel": "App",
+          "timestamp": "2026-04-28T14:00:00Z",
+          "geo_location": "31.5497,74.3436",
+          "imei": "351234567890123",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-001",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "vpn_usage": false,
+          "amount_usd_equiv": 18,
+          "merchant_high_risk": false,
+          "geo_high_risk": false
+        }
+      }
+    },
+    {
+      "name": "ctr_threshold_breach_2M_cash",
+      "description": "Single cash transaction at PKR 2M — exact CTR threshold, should trigger CMP_CTR_AMT and produce a CTR signal.",
+      "expected_outcome": {
+        "ctr_signal": true,
+        "rule_ids_should_fire": ["CMP_CTR_AMT_single_2M"],
+        "should_escalate": true,
+        "regulatory_reference": "AML Act 2010 §7; SBP AML/CFT Reg 4 §3"
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-ctr-001",
+          "transaction_id": "test-pk-ctr-001",
+          "from_wallet_uid": "wallet-pk-002",
+          "to_wallet_uid": "wallet-pk-cash-deposit",
+          "amount": 2000000,
+          "currency": "PKR",
+          "transaction_type": "cash",
+          "transaction_status": "Success",
+          "channel": "Branch",
+          "timestamp": "2026-04-28T11:30:00Z",
+          "geo_location": "24.8607,67.0011",
+          "imei": "359876543210987",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-002",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "amount_usd_equiv": 7100,
+          "cash_24h_sum_pkr": 2000000.0
+        }
+      }
+    },
+    {
+      "name": "high_velocity_withdrawal_in_1h",
+      "description": "PKR 600,000 withdrawn in 1 hour — exceeds bank-tunable 500k threshold, should trigger CMP_STR_LRG and likely escalate to Marbel.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["CMP_STR_LRG_withdrawal_500k_1h"],
+        "should_escalate": true,
+        "marble_score_min": 15
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-hv-001",
+          "transaction_id": "test-pk-hv-001",
+          "from_wallet_uid": "wallet-pk-003",
+          "to_wallet_uid": "wallet-pk-cash-out",
+          "amount": 200000,
+          "currency": "PKR",
+          "transaction_type": "cash_out",
+          "transaction_status": "Success",
+          "channel": "ATM",
+          "timestamp": "2026-04-28T13:00:00Z",
+          "geo_location": "33.6844,73.0479",
+          "imei": "353111122223333",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-003",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": true,
+          "withdrawal_1h_sum_pkr": 600000.0,
+          "amount_usd_equiv": 710
+        }
+      }
+    },
+    {
+      "name": "pep_match_block",
+      "description": "Counterparty matches PEP list (CMP_PEP_020). Score modifier +10 from CMP, +20 from OBR_PEP if onboarding scenario evaluated. Critical risk.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["CMP_PEP_020_counterparty_pep"],
+        "should_escalate": true
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-pep-001",
+          "transaction_id": "test-pk-pep-001",
+          "from_wallet_uid": "wallet-pk-004",
+          "to_wallet_uid": "wallet-pep-counterparty",
+          "amount": 350000,
+          "currency": "PKR",
+          "transaction_type": "transfer",
+          "transaction_status": "Pending",
+          "channel": "InternetBanking",
+          "timestamp": "2026-04-28T15:00:00Z",
+          "geo_location": "33.6844,73.0479",
+          "imei": "354000000000000",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-004",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "counterparty_pep": true,
+          "amount_usd_equiv": 1240
+        }
+      }
+    },
+    {
+      "name": "sanctions_hit_critical",
+      "description": "Counterparty wallet matches UN/OFAC/FATF sanctions list — must block + freeze + STR (CMP_SANC_021).",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["CMP_SANC_021_counterparty_sanctions"],
+        "should_escalate": true,
+        "regulatory_reference": "AML Act 2010 §9; UNSC Resolutions 1267/1988/2231"
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-sanc-001",
+          "transaction_id": "test-pk-sanc-001",
+          "from_wallet_uid": "wallet-pk-005",
+          "to_wallet_uid": "wallet-sanctioned-entity",
+          "amount": 100000,
+          "currency": "PKR",
+          "transaction_type": "transfer",
+          "transaction_status": "Pending",
+          "channel": "App",
+          "timestamp": "2026-04-28T16:00:00Z",
+          "geo_location": "31.5497,74.3436",
+          "imei": "355000000000000",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-005",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "counterparty_sanctions": true,
+          "amount_usd_equiv": 355
+        }
+      }
+    },
+    {
+      "name": "high_risk_geo_balochistan_border",
+      "description": "Transaction originating in a flagged Balochistan border district (Chaman/Panjgur). Geo high-risk + cross-border patterns elevate score.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["RSK_GEO_052_high_risk_geo"],
+        "should_escalate": true
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-geo-001",
+          "transaction_id": "test-pk-geo-001",
+          "from_wallet_uid": "wallet-pk-006",
+          "to_wallet_uid": "wallet-recipient-006",
+          "amount": 250000,
+          "currency": "PKR",
+          "transaction_type": "transfer",
+          "transaction_status": "Success",
+          "channel": "App",
+          "timestamp": "2026-04-28T19:00:00Z",
+          "geo_location": "30.9554,66.4567",
+          "imei": "356000000000000",
+          "imei_mismatch_flag": true,
+          "initiated_by": "user-pk-006",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "geo_high_risk": true,
+          "home_vs_txn_province_mismatch": true,
+          "travel_notice_active": false,
+          "amount_usd_equiv": 890
+        }
+      }
+    },
+    {
+      "name": "night_high_value_transfer",
+      "description": "PKR 250k transfer at 02:30 — RSK_NIGHT_051 fires (night + amount > 100k); minor escalation.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["RSK_NIGHT_051_night_high_value"],
+        "should_escalate": false
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-night-001",
+          "transaction_id": "test-pk-night-001",
+          "from_wallet_uid": "wallet-pk-007",
+          "to_wallet_uid": "wallet-recipient-007",
+          "amount": 250000,
+          "currency": "PKR",
+          "transaction_type": "transfer",
+          "transaction_status": "Success",
+          "channel": "App",
+          "timestamp": "2026-04-28T02:30:00Z",
+          "geo_location": "31.5497,74.3436",
+          "imei": "357000000000000",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-007",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": true,
+          "velocity_spike_detected": false,
+          "amount_usd_equiv": 890
+        }
+      }
+    },
+    {
+      "name": "structuring_smurfing_pattern",
+      "description": "Five deposits between PKR 1.9M and 1.95M in 24h — classic structuring just below CTR. CMP_STR_STR fires + RSK_DEPS_057 + RSK_ROUND_058.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["CMP_STR_STR_structuring", "RSK_ROUND_058_sub_ctr_round"],
+        "should_escalate": true,
+        "str_signal": true
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-smurf-001",
+          "transaction_id": "test-pk-smurf-001",
+          "from_wallet_uid": "wallet-pk-008",
+          "to_wallet_uid": "wallet-mule-008",
+          "amount": 1950000,
+          "currency": "PKR",
+          "transaction_type": "cash",
+          "transaction_status": "Success",
+          "channel": "Branch",
+          "timestamp": "2026-04-28T17:00:00Z",
+          "geo_location": "24.8607,67.0011",
+          "imei": "358000000000000",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-008",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": true,
+          "structuring_detected": true,
+          "round_amount_sub_ctr": true,
+          "small_deposits_24h_count": 5,
+          "amount_usd_equiv": 6920
+        }
+      }
+    },
+    {
+      "name": "dormant_account_high_value_reactivation",
+      "description": "Account dormant 18 months, first txn = PKR 600k withdrawal without re-KYC. DORM_AMT_120 + DORM_KYC_121 both fire.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["DORM_AMT_120_high_value_reactivation", "DORM_KYC_121_no_rekyc"],
+        "should_escalate": true,
+        "regulatory_reference": "SBP BPD Circular 26/2005; AML/CFT Reg 1 §3.7"
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-dorm-001",
+          "transaction_id": "test-pk-dorm-001",
+          "from_wallet_uid": "wallet-pk-009-dormant",
+          "to_wallet_uid": "wallet-recipient-009",
+          "amount": 600000,
+          "currency": "PKR",
+          "transaction_type": "cash_out",
+          "transaction_status": "Pending",
+          "channel": "ATM",
+          "timestamp": "2026-04-28T11:00:00Z",
+          "geo_location": "33.6844,73.0479",
+          "imei": "359000000000000",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-009",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "dormant_reactivation_flag": true,
+          "rekyc_completed": false,
+          "amount_usd_equiv": 2130
+        }
+      }
+    },
+    {
+      "name": "branchless_banking_level0_breach",
+      "description": "BB Level-0 user attempts PKR 30,000 single txn (above 25k daily cap). Agent-tier check should flag.",
+      "expected_outcome": {
+        "rule_ids_should_fire": ["FLT_CAP_083_tier_cap_exceeded"],
+        "should_escalate": false,
+        "regulatory_reference": "SBP Branchless Banking Regulations — Level 0 daily cap PKR 25,000"
+      },
+      "request": {
+        "scenario_id": "<TXN_RISK_SCORING_ID>",
+        "trigger_object_type": "transactions",
+        "trigger_object": {
+          "object_id": "test-pk-bb0-001",
+          "transaction_id": "test-pk-bb0-001",
+          "from_wallet_uid": "wallet-pk-bb0-010",
+          "to_wallet_uid": "wallet-recipient-010",
+          "amount": 30000,
+          "currency": "PKR",
+          "transaction_type": "agent_cashout",
+          "transaction_status": "Pending",
+          "channel": "BB-Agent",
+          "timestamp": "2026-04-28T14:30:00Z",
+          "geo_location": "31.5497,74.3436",
+          "imei": "360000000000000",
+          "imei_mismatch_flag": false,
+          "initiated_by": "user-pk-010",
+          "reversal_flag": false,
+          "biometric_failure_count": 0,
+          "is_night_tx": false,
+          "velocity_spike_detected": false,
+          "agent_role": "BB-Level-0",
+          "risk_limit_exceeded": true,
+          "amount_usd_equiv": 107
+        }
+      }
+    }
+  ]
+}

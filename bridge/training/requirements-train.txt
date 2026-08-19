@@ -1,0 +1,33 @@
+# ML Training Dependencies for Marbel and GNN
+# Install with: pip install -r requirements-train.txt
+
+# Core ML
+xgboost==2.1.3
+lightgbm==4.5.0
+scikit-learn==1.5.2
+imbalanced-learn==0.12.4
+
+# Deep Learning (for GNN)
+torch==2.4.1
+torch-geometric==2.6.1
+
+# Explainability
+shap==0.46.0
+
+# Data Processing
+pandas==2.2.3
+numpy==1.26.4
+
+# Hyperparameter Tuning
+optuna==4.0.0
+
+# Kaggle Dataset Download
+kaggle==1.6.17
+
+# Graph utilities
+networkx==3.4.2
+
+# Utilities
+joblib==1.4.2
+tqdm==4.66.5
+python-dotenv==1.0.1
